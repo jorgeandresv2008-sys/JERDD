@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block titulo %}Productos - JERDD Admin{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0"><i class="bi bi-box-seam"></i> Productos</h2>
+    <a href="{{ url_for('administrador.agregar_producto') }}" class="btn btn-primary rounded-3">
+        <i class="bi bi-plus-lg"></i> Nuevo producto
+    </a>
+</div>
+
+<form class="d-flex gap-2 mb-3" method="GET">
+    <input type="text" name="q" value="{{ busqueda }}" class="form-control rounded-3" placeholder="Buscar..." style="max-width:250px">
+    <select name="categoria" class="form-select rounded-3" style="max-width:180px">
+        <option value="">Todas las categorías</option>
+        {% for cat in categorias %}
+        <option value="{{ cat.categoria }}" {% if cat.categoria == categoria %}selected{% endif %}>{{ cat.categoria }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-secondary rounded-3">Buscar</button>
+    {% if busqueda or categoria %}
+    <a href="{{ url_for('administrador.productos') }}" class="btn btn-outline-secondary rounded-3">Limpiar</a>
+    {% endif %}
+</form>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4">Imagen</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th class="text-end">Precio</th>
+                    <th class="text-center">Stock</th>
+                                        <th class="pe-4 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for p in productos %}
+            <tr>
+                <td class="ps-4">
+                    {% if p.imagen_url %}
+                    <img src="{{ p.imagen_url }}" alt="{{ p.nombre }}"
+                         style="width:40px;height:40px;object-fit:cover;border-radius:8px;border:1px solid #dee2e6">
+                    {% else %}
+                    <div style="width:40px;height:40px;background:#f8f9fa;border-radius:8px;border:1px solid #dee2e6;display:flex;align-items:center;justify-content:center">
+                        <i class="bi bi-image text-muted small"></i>
+                    </div>
+                    {% endif %}
+                </td>
+                <td><code class="text-primary">{{ p.codigo }}</code></td>
+                <td class="fw-medium">{{ p.nombre }}</td>
+                <td><span class="badge bg-light text-dark rounded-pill">{{ p.categoria or '-' }}</span></td>
+                <td class="text-end">${{ "{:,.0f}".format(p.precio) }}</td>
+                <td class="text-center">
+                    <span class="badge rounded-pill {% if p.stock <= 5 %}bg-danger{% elif p.stock <= 20 %}bg-warning text-dark{% else %}bg-success{% endif %}">{{ p.stock }}</span>
+                </td>
+                <td class="pe-4 text-center">
+                    <a href="{{ url_for('administrador.editar_producto', pid=p.id) }}" class="btn btn-sm btn-outline-primary rounded-3 me-1">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form method="POST" action="{{ url_for('administrador.eliminar_producto', pid=p.id) }}" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar este producto? Esta accion no se puede deshacer.')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-3">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" class="text-center text-muted py-4">No hay productos.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

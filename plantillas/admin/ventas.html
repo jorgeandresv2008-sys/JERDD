@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block titulo %}Ventas - JERDD Admin{% endblock %}
+
+{% block contenido %}
+<h2 class="fw-bold mb-4"><i class="bi bi-receipt"></i> Ventas</h2>
+
+<form class="d-flex gap-2 mb-3 align-items-center flex-wrap" method="GET">
+    <label class="text-muted small">Desde:</label>
+    <input type="date" name="fecha_ini" value="{{ fecha_ini }}" class="form-control form-control-sm rounded-3" style="width:160px">
+    <label class="text-muted small">Hasta:</label>
+    <input type="date" name="fecha_fin" value="{{ fecha_fin }}" class="form-control form-control-sm rounded-3" style="width:160px">
+    <button type="submit" class="btn btn-secondary btn-sm rounded-3">Filtrar</button>
+    {% if fecha_ini or fecha_fin %}
+    <a href="{{ url_for('administrador.ventas') }}" class="btn btn-outline-secondary btn-sm rounded-3">Limpiar</a>
+    {% endif %}
+</form>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4">Factura</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th class="text-end">Subtotal</th>
+                    <th class="text-end">IVA</th>
+                    <th class="text-end">Total</th>
+                    <th class="pe-4 text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for v in ventas %}
+            <tr>
+                <td class="ps-4"><span class="fw-medium font-monospace small">{{ v.numero_factura }}</span></td>
+                <td class="text-muted small">{{ v.fecha[:16] }}</td>
+                <td>{{ v.cliente_nombre }}</td>
+                <td class="text-end">${{ "{:,.0f}".format(v.subtotal) }}</td>
+                <td class="text-end">${{ "{:,.0f}".format(v.iva) }}</td>
+                <td class="text-end fw-bold">${{ "{:,.0f}".format(v.total) }}</td>
+                <td class="pe-4 text-center">
+                    <a href="{{ url_for('administrador.ver_venta', venta_id=v.id) }}" class="btn btn-sm btn-outline-primary rounded-3">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center text-muted py-4">No hay ventas registradas.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}JERDD{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% if usuario %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+            <i class="bi bi-shop"></i> JERDD
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            {% if usuario.rol == 'admin' %}
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('administrador.dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('administrador.productos') }}"><i class="bi bi-box-seam"></i> Productos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('administrador.clientes') }}"><i class="bi bi-people"></i> Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('administrador.ventas') }}"><i class="bi bi-receipt"></i> Ventas</a></li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('tienda.index') }}"><i class="bi bi-shop"></i> Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('tienda.mis_compras') }}"><i class="bi bi-bag-check"></i> Mis compras</a></li>
+            </ul>
+            {% endif %}
+            <ul class="navbar-nav ms-auto align-items-center">
+                {% if usuario.rol == 'cliente' %}
+                <li class="nav-item me-2">
+                    <a class="nav-link position-relative" href="{{ url_for('tienda.ver_carrito') }}">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        {% if cantidad_carrito is defined and cantidad_carrito > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ cantidad_carrito }}
+                        </span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> {{ usuario.nombre.split()[0] }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if usuario.rol == 'cliente' %}
+                        <li><a class="dropdown-item" href="{{ url_for('tienda.perfil') }}"><i class="bi bi-person"></i> Mi perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('autenticacion.logout') }}"><i class="bi bi-box-arrow-right"></i> Cerrar sesion</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+<div class="container py-4">
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}
+    <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    {% block contenido %}{% endblock %}
+</div>
+
+<footer class="bg-light border-top py-3 mt-5">
+    <div class="container text-center text-muted small">
+        JERDD &copy; 2026 — Sistema de Gestión Comercial
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

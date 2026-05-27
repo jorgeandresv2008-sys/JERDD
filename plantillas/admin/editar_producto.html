@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block titulo %}Editar Producto - JERDD{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0"><i class="bi bi-pencil-square"></i> Editar Producto</h2>
+    <a href="{{ url_for('administrador.productos') }}" class="btn btn-outline-secondary rounded-3">← Volver</a>
+</div>
+
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card border-0 shadow-sm rounded-4">
+<div class="card-body p-4">
+
+<form method="POST" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label class="form-label text-muted small fw-medium">CÓDIGO (no editable)</label>
+        <div class="p-2 bg-light border rounded-3 font-monospace fw-bold text-primary">{{ producto.codigo }}</div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-7">
+            <label class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input type="text" name="nombre" class="form-control rounded-3" required value="{{ producto.nombre }}">
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Categoría <span class="text-danger">*</span></label>
+            <input type="text" name="categoria" class="form-control rounded-3" required
+                   list="cats-list" value="{{ producto.categoria or '' }}">
+            <datalist id="cats-list">
+                {% for cat in categorias %}
+                <option value="{{ cat.categoria }}">
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
+
+    <div class="mt-3 mb-3">
+        <label class="form-label">Descripción</label>
+        <textarea name="descripcion" class="form-control rounded-3" rows="2">{{ producto.descripcion or '' }}</textarea>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <label class="form-label">Precio <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="precio" class="form-control rounded-end-3" required min="0.01" step="0.01" value="{{ producto.precio }}">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Stock <span class="text-danger">*</span></label>
+            <input type="number" name="stock" class="form-control rounded-3" required min="0" value="{{ producto.stock }}">
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Imagen del producto</label>
+        {% if producto.imagen_url %}
+        <div class="mb-2">
+            <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}"
+                 style="height:100px;border-radius:8px;object-fit:cover;border:1px solid #dee2e6">
+            <p class="text-muted small mt-1">Imagen actual — sube una nueva para reemplazarla</p>
+        </div>
+        {% endif %}
+        <div class="upload-zone rounded-3 p-3 text-center" id="upload-zone"
+             onclick="document.getElementById('img-input').click()"
+             style="border:2px dashed #dee2e6;cursor:pointer;background:#fafafa">
+            <div id="upload-placeholder">
+                <i class="bi bi-cloud-upload text-muted"></i>
+                <span class="text-muted small ms-2">Clic para subir nueva imagen</span>
+            </div>
+            <div id="img-preview-wrap" style="display:none">
+                <img id="img-preview" src="" style="max-height:120px;border-radius:8px">
+            </div>
+        </div>
+        <input type="file" id="img-input" name="imagen" accept="image/*" style="display:none">
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary rounded-3 px-4">
+            <i class="bi bi-check-lg"></i> Guardar cambios
+        </button>
+        <a href="{{ url_for('administrador.productos') }}" class="btn btn-outline-secondary rounded-3">Cancelar</a>
+    </div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('img-input').addEventListener('change', function() {
+    if (this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('img-preview').src = e.target.result;
+            document.getElementById('upload-placeholder').style.display = 'none';
+            document.getElementById('img-preview-wrap').style.display = 'block';
+        };
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+</script>
+{% endblock %}
