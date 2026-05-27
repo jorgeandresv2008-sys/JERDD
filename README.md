@@ -1,12 +1,12 @@
 [README.md](https://github.com/user-attachments/files/28294529/README.md)
-# 🛒 JERDD – Tienda Virtual
+#  JERDD – Tienda Virtual
 
 > Proyecto ABPr – Aplicación web de e-commerce desarrollada con Flask y Python  
 > Programación Orientada a Objetos · SQLite · Arquitectura MVC
 
 ---
 
-## 📋 Descripción
+##  Descripción
 
 **JERDD** es una tienda virtual completa desarrollada como proyecto final del semestre. Permite a los clientes explorar productos, gestionar un carrito de compras y generar facturas, mientras que el administrador puede controlar el inventario, ver estadísticas y gestionar usuarios desde un panel dedicado.
 
@@ -14,7 +14,7 @@ La aplicación aplica los principios de **Programación Orientada a Objetos** or
 
 ---
 
-## 🗂️ Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 JERDD/
@@ -62,7 +62,7 @@ JERDD/
 
 ---
 
-## 🚀 Instalación y Ejecución
+##  Instalación y Ejecución
 
 ### 1. Clonar el repositorio
 
@@ -78,9 +78,6 @@ python -m venv venv
 
 # En Windows
 venv\Scripts\activate
-
-# En Mac / Linux
-source venv/bin/activate
 
 pip install flask bcrypt
 ```
@@ -101,7 +98,7 @@ Abre tu navegador en: **http://localhost:5000**
 
 ---
 
-## 🔐 Credenciales de prueba
+##  Credenciales de prueba
 
 | Rol | Email | Contraseña |
 |---|---|---|
@@ -112,7 +109,7 @@ Abre tu navegador en: **http://localhost:5000**
 
 ---
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
 ### Panel del Cliente
 - **Registro e inicio de sesión** con contraseñas hasheadas con bcrypt
@@ -132,7 +129,7 @@ Abre tu navegador en: **http://localhost:5000**
 
 ---
 
-## 🧱 Arquitectura y POO
+##  Arquitectura y POO
 
 El proyecto aplica los principios de **Programación Orientada a Objetos** y el patrón **MVC** de la siguiente forma:
 
@@ -151,7 +148,7 @@ El proyecto aplica los principios de **Programación Orientada a Objetos** y el 
 
 ---
 
-## 🗄️ Modelo de Datos
+##  Modelo de Datos
 
 ```
 usuarios
@@ -169,7 +166,7 @@ detalle_ventas
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+##  Tecnologías utilizadas
 
 | Tecnología | Uso |
 |---|---|
@@ -182,7 +179,7 @@ detalle_ventas
 
 ---
 
-## 👥 Integrantes del grupo
+##  Integrantes del grupo
 
 | Nombre | Rol |
 |---|---|
@@ -191,6 +188,6 @@ detalle_ventas
 
 ---
 
-## 📄 Licencia
+##  Licencia
 
 Proyecto académico – Programación Orientada a Objetos
